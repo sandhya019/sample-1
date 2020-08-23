@@ -54,14 +54,14 @@ pipeline {
 		emailext attachLog: true, attachmentsPattern: 'MunitReports/MunitReport-${BUILD_NUMBER}.html,report/${BUILD_NUMBER}/htmlreport.html', 		
 		body: "<h4> ${currentBuild.currentResult}: </h4> Job: <h4> ${env.JOB_NAME}</h4> build: <h4>${env.BUILD_NUMBER}</h4>", compressLog: true, subject: "Jenkins Build ${currentBuild.currentResult}", to: "sandhya.a.n@capgemini.com"
 			
-			publishHTML target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'MunitReports',
-			reportFiles: 'MunitReport-${BUILD_ID}.html',
-            reportName: 'Munit Report'
-            ]
+	    	   publishHTML target: [
+            	   allowMissing: false,
+            	   alwaysLinkToLastBuild: false,
+            	   keepAll: true,
+            	   reportDir: 'MunitReports',
+		   reportFiles: 'MunitReport-${BUILD_ID}.html',
+            	   reportName: 'Munit Report'
+            	   ]
 		}
 	}
 }	
