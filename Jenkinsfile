@@ -5,9 +5,9 @@ pipeline {
            maven 'Maven3'
           }
 	
-    environment {
-	     def MAVEN_TOOL = /opt/apache-maven-3.6.3
-    		}
+   environment {
+    	MAVEN_HOME = '/tools/apache-maven-3.3.9'
+		}
 	
 	stages {	
 	   stage('Compile'){
@@ -39,8 +39,7 @@ pipeline {
 					def server = Artifactory.server "Artifactory-server"
 					def buildInfo = Artifactory.newBuildInfo()
 					buildInfo.env.capture = true
-					def rtMaven = Artifactory.newMavenBuild()
-					rtMaven.tool = MAVEN_TOOL 
+					def rtMaven = Artifactory.newMavenBuild() 
 				    	rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: server
 					rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
 
