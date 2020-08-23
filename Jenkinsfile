@@ -36,18 +36,20 @@ pipeline {
 		stage ('Artifactory upload'){
 			steps{
 				script{
+					
 					def server = Artifactory.server "Artifactory-server"
-					def buildInfo = Artifactory.newBuildInfo()
-					buildInfo.env.capture = true
-					def rtMaven = Artifactory.newMavenBuild() 
-				    	rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: 'Artifactory-server'
-					rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: 'Artifactory-server'
+  					def buildInfo = Artifactory.newBuildInfo()
+  					buildInfo.env.capture = true
+  					def rtMaven = Artifactory.newMavenBuild()
+  					rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: 'Artifactory-server'
+  					rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: 'Artifactory-server'
 
-					rtMaven.run pom: 'sample/pom.xml', goals: 'clean install', buildInfo: buildInfo
+  					rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
 
-					// Publish build info.
-					server.PublishBuildInfo buildInfo
-				}
+  					buildInfo.retention maxBuilds: 10, maxDays: 7, deleteBuildArtifacts: true
+  					// Publish build info.
+  					server.publishBuildInfo buildInfo
+					}
 			}	
 	    }
 	}
