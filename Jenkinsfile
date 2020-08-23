@@ -28,7 +28,6 @@ pipeline {
 		
 		stage ('Artifactory upload'){
 			steps{
-				script{
 					def server = Artifactory.server "my-server-id"
 					def buildInfo = Artifactory.newBuildInfo()
 					buildInfo.env.capture = true
@@ -42,7 +41,6 @@ pipeline {
 					rtMaven.deployer.deployArtifacts buildInfo
 					// Publish build info.
 					server.publishBuildInfo buildInfo
-				}
 			}
 	    }
 	}
