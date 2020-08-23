@@ -40,10 +40,10 @@ pipeline {
 					def buildInfo = Artifactory.newBuildInfo()
 					buildInfo.env.capture = true
 					def rtMaven = Artifactory.newMavenBuild() 
-				    	rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: server
-					rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
+				    	rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: 'Artifactory-server'
+					rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: 'Artifactory-server'
 
-					rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+					rtMaven.run pom: 'sample/pom.xml', goals: 'clean install', buildInfo: buildInfo
 
 					rtMaven.deployer.deployArtifacts buildInfo
 					// Publish build info.
