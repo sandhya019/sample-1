@@ -45,9 +45,8 @@ pipeline {
 
 					rtMaven.run pom: 'sample/pom.xml', goals: 'clean install', buildInfo: buildInfo
 
-					rtMaven.deployer.deployArtifacts buildInfo
 					// Publish build info.
-					server.rtPublishBuildInfo buildInfo
+					server.PublishBuildInfo buildInfo
 				}
 			}	
 	    }
