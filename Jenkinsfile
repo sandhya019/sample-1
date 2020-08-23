@@ -1,8 +1,15 @@
 pipeline {
-	agent any
+     agent any
+     tools {
+	   jdk 'jdk8'
+           maven 'Maven3'
+          }
 	
-	stages {
+    environment {
+	     def MAVEN_TOOL = tool 'Maven3' 
+    		}
 	
+	stages {	
 	   stage('Compile'){
             steps{
                 sh script: 'mvn clean compile'
@@ -33,7 +40,7 @@ pipeline {
 					def buildInfo = Artifactory.newBuildInfo()
 					buildInfo.env.capture = true
 					def rtMaven = Artifactory.newMavenBuild()
-					rtMaven.tool = Maven3 // Tool name from Jenkins configuration
+					rtMaven.tool = MAVEN_TOOL 
 				    	rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: server
 					rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
 
