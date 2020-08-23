@@ -1,13 +1,8 @@
 pipeline {
      agent any
      tools {
-	   jdk 'jdk8'
            maven 'Maven3'
-          }
-	
-   environment {
-    	MAVEN_HOME = '/opt/apache-maven-3.6.3'
-		}
+     }
 	
 	stages {	
 	   stage('Compile'){
@@ -41,6 +36,7 @@ pipeline {
   					def buildInfo = Artifactory.newBuildInfo()
   					buildInfo.env.capture = true
   					def rtMaven = Artifactory.newMavenBuild()
+					rtMaven.tool = Maven3
   					rtMaven.deployer releaseRepo:'libs-release-local', snapshotRepo:'libs-snapshot-local', server: server
   					rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
 
