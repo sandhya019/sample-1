@@ -47,7 +47,7 @@ pipeline {
 
 					rtMaven.deployer.deployArtifacts buildInfo
 					// Publish build info.
-					server.publishBuildInfo buildInfo
+					server.rtPublishBuildInfo buildInfo
 				}
 			}	
 	    }
