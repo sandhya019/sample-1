@@ -6,7 +6,7 @@ pipeline {
           }
 	
     environment {
-	     def MAVEN_TOOL = tool 'Maven3' 
+	     def MAVEN_TOOL = /opt/apache-maven-3.6.3
     		}
 	
 	stages {	
