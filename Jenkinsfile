@@ -30,21 +30,22 @@ pipeline {
 		
 		stage ('Artifactory upload'){
 			steps{
-			     script{
+			     gitlabCommitStatus("upload") {
 				 def server = Artifactory.server "Artifactory-server"
       				 def buildInfo = Artifactory.newBuildInfo()
       				 buildInfo.env.capture = true
       				 buildInfo.env.collect()
-
-      				 def uploadSpec = """{
-        			    "files": [
-          				{
-            				   "pattern": "**/target/${mavenPom.artifactId}-${mavenPom.version}-${mavenPom.packaging}.jar",
-            				   "target": "libs-snapshot-local"
-          				}
-        				    ]
-      				}"""
-      
+				     
+				 def uploadSpec = """{
+  				        "files": [
+    					   {
+      						"pattern": "**/target/*.jar",
+      						"target": "libs-snapshot-local",
+						"props": "type=jar;status=ready"
+    					    }
+ 						]
+					}"""
+				     
 				// Upload to Artifactory.
       				server.upload spec: uploadSpec, buildInfo: buildInfo
       
