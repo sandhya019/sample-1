@@ -35,14 +35,19 @@ pipeline {
 	stage('Artifactory upload'){
 			steps{
 				script{
-					 def server = Artifactory.server('Artifactory-server')
-					 def rtMaven = Artifactory.newMavenBuild()
-					 rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-					 rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
-					 def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
-					 server.publishBuildInfo buildInfo
-		   	 	}	
-		   	}
+					def server = Artifactory.server 'Artifactory-server'
+					def uploadSpec = """{
+  					  "files": [
+    						{
+      						    "pattern": "**/target/*.jar
+      						    "target": "libs-snapshot-local"
+						   }
+						 ]
+					}"""
+					def buildInfo = server.upload(uploadSpec)
+					server.publishBuildInfo(buildInfo)
+		   	 		}	
+		   		}
 	    	}
     }	
 	
