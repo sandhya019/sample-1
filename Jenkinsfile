@@ -39,7 +39,7 @@ pipeline {
 					def uploadSpec = """{
   					  "files": [
     						{
-      						    "pattern": "target/${mavenPom.artifactId}-${mavenPom.version}-${mavenPom.packaging}.jar",
+      						    "pattern": "target/*.jar",
       						    "target": "libs-snapshot-local"
 						   }
 						 ]
