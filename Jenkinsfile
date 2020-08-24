@@ -6,6 +6,7 @@ pipeline {
 	
      environment {
 		MAVEN_TOOL='/opt/apache-maven-3.6.3'
+	        JAR='${mavenPom.artifactId}-${mavenPom.version}-${mavenPom.packaging}'
 		}
 	
 	stages {	
@@ -39,7 +40,7 @@ pipeline {
 					def uploadSpec = """{
   					  "files": [
     						{
-      						    "pattern": "target/*.jar",
+      						    "pattern": "target/JAR.jar",
       						    "target": "lla-esb-snapshot"
 						   }
 						 ]
