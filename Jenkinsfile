@@ -41,9 +41,9 @@ pipeline {
 					//rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
 					//def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
 					//server.publishBuildInfo buildInfo
-		   	 		}	
-		   		}
-	    	}
+		   	 		//}	
+		   		//}
+	    	//}
     }	
 	
 	post {
