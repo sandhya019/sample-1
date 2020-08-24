@@ -4,8 +4,8 @@
 
 	<groupId>com.mycompany</groupId>
 	<artifactId>sample</artifactId>
-    <version>1.0.9-SNAPSHOT</version>
-	 <packaging>mule-application</packaging>
+    	<version>1.0.9-SNAPSHOT</version>
+	<packaging>mule-application</packaging>
 	<name>sample</name>
 
     <properties>
@@ -13,11 +13,20 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.3.0</app.runtime>
-		<mule.maven.plugin.version>3.3.5</mule.maven.plugin.version>
 	        <munit.version>2.2.5</munit.version>
-
     </properties>
-
+	<distributionManagement>
+    	    <snapshotRepository>
+        	<id>snapshots</id>
+        	<name>ip-172-31-34-32.us-east-2.compute.internal-snapshots</name>
+        	<url>http://3.134.110.19:8081/artifactory/libs-snapshot-local</url>
+            </snapshotRepository>
+    	    <repository>
+        	<id>central</id>
+        	<name>ip-172-31-34-32.us-east-2.compute.internal-releases</name>
+        	<url>http://3.134.110.19:8081/artifactory/lla-esb-release</url>
+            </repository>
+        </distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
@@ -110,11 +119,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-     <distributionManagement>
-    <snapshotRepository>
-        <id>snapshots</id>
-        <name>ip-172-31-34-32.us-east-2.compute.internal-snapshots</name>
-        <url>http://3.134.110.19:8081/artifactory/libs-snapshot-local</url>
-    </snapshotRepository>
-</distributionManagement>
 </project>
