@@ -33,12 +33,19 @@ pipeline {
 	stage('Artifactory upload'){
 			steps{
 				script{
-					def server = Artifactory.server('Artifactory-server')
-					def rtMaven = Artifactory.newMavenBuild()
-					rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-					rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
-					def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
-					server.publishBuildInfo buildInfo
+					 def server = Artifactory.server('Artifactory-server')
+  					 def buildInfo = Artifactory.newBuildInfo()
+  					 buildInfo.env.capture = true
+  					 def rtMaven = Artifactory.newMavenBuild()
+  					 rtMaven.tool = MAVEN_TOOL // Tool name from Jenkins configuration
+  					
+  					 rtMaven.deployer releaseRepo:'lla-esb-release', snapshotRepo:'lla-esb-snapshot', server: server
+      					 rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
+
+  					 rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+
+  					 // Publish build info.
+  					server.publishBuildInfo buildInfo
 		   	 }	
 		   }
 	    }
