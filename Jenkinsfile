@@ -39,7 +39,7 @@ pipeline {
 					def rtMaven = Artifactory.newMavenBuild()
 					rtMaven.resolver server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
 					rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
-					def buildInfo = rtMaven.run pom: 'pom.xml'
+					def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
 					server.publishBuildInfo buildInfo
 		   	 		}	
 		   		}
