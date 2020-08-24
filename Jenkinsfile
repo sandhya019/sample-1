@@ -32,18 +32,18 @@ pipeline {
 			}
 		}
 		
-	//stage('Artifactory upload'){
-			//steps{
-				//script{
-					//def server = Artifactory.server('Artifactory-server')
-					//def rtMaven = Artifactory.newMavenBuild()
-					//rtMaven.resolver server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
-					//rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
-					//def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
-					//server.publishBuildInfo buildInfo
-		   	 		//}	
-		   		//}
-	    	//}
+	stage('Artifactory upload'){
+			steps{
+				script{
+					def server = Artifactory.server('Artifactory-server')
+					def rtMaven = Artifactory.newMavenBuild()
+					rtMaven.resolver server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
+					rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
+					def buildInfo = rtMaven.run pom: 'pom.xml'
+					server.publishBuildInfo buildInfo
+		   	 		}	
+		   		}
+	    	}
     }	
 	
 	post {
