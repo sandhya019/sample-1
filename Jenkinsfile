@@ -40,7 +40,7 @@ pipeline {
 					def uploadSpec = """{
   					  "files": [
     						{
-      						    "pattern": "target/${JAR}.jar",
+      						    "pattern": "target/$JAR.jar",
       						    "target": "lla-esb-snapshot"
 						   }
 						 ]
