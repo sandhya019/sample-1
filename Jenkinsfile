@@ -3,7 +3,9 @@ pipeline {
      tools {
            maven 'Maven3'
      }
-	
+	environment {
+		MAVEN_TOOL = '/opt/apache-maven-3.6.3'
+	}
 	stages {	
 	   stage('Compile'){
             steps{
@@ -54,7 +56,7 @@ pipeline {
         stage ('Exec Maven') {
             steps {
                 rtMavenRun (
-                    tool: Maven3, // Tool name from Jenkins configuration
+                    tool: MAVEN_TOOL, // Tool name from Jenkins configuration
                     pom: 'pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER",
