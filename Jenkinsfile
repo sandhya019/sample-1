@@ -3,9 +3,6 @@ pipeline {
      tools {
            maven 'Maven3'
      }
-	environment {
-		MAVEN_TOOL = '/opt/apache-maven-3.6.3'
-	}
 	stages {	
 	   stage('Compile'){
             steps{
@@ -37,7 +34,6 @@ pipeline {
   					 def buildInfo = Artifactory.newBuildInfo()
   					 buildInfo.env.capture = true
   					 def rtMaven = Artifactory.newMavenBuild()
-  					 rtMaven.tool = MAVEN_TOOL // Tool name from Jenkins configuration
   					
   					 rtMaven.deployer releaseRepo:'lla-esb-release', snapshotRepo:'lla-esb-snapshot', server: server
       					 rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
