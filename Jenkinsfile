@@ -36,11 +36,12 @@ pipeline {
 	stage('Artifactory upload'){
 			steps{
 				script{
+					def mavenPom = readMavenPom file:'pom.xml'
 					def server = Artifactory.server 'Artifactory-server'
 					def uploadSpec = """{
   					  "files": [
     						{
-      						    "pattern": "target/$JAR.jar",
+      						    "pattern": "target/${mavenPom.artifactId}-${mavenPom.version}-${mavenPom.packaging}.jar",
       						    "target": "lla-esb-snapshot"
 						   }
 						 ]
