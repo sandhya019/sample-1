@@ -6,8 +6,7 @@ pipeline {
 	
      environment {
 		MAVEN_TOOL='/opt/apache-maven-3.6.3'
-	        JAR='${mavenPom.artifactId}-${mavenPom.version}-${mavenPom.packaging}'
-		}
+	        }
 	
 	stages {	
 	   stage('Compile'){
@@ -38,7 +37,7 @@ pipeline {
 				script{
 					def server = Artifactory.server('Artifactory-server')
 					def rtMaven = Artifactory.newMavenBuild()
-					rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+					rtMaven.resolver server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
 					rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
 					def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
 					server.publishBuildInfo buildInfo
