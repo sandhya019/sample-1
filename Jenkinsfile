@@ -36,7 +36,6 @@ pipeline {
 	stage('Artifactory upload'){
 			steps{
 				script{
-					def mavenPom = readMavenPom file:'pom.xml'
 					def server = Artifactory.server('Artifactory-server')
 					def rtMaven = Artifactory.newMavenBuild()
 					rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
