@@ -16,8 +16,8 @@ pipeline {
                sh 'mvn test-compile test package'
 			}
 		}
-		stage(' publishing Munit Reports'){
-			steps{
+	stage(' publishing Munit Reports'){
+	     steps{
 			sh '''
 			echo " ${WORKSPACE} "
 			cd ${WORKSPACE}
@@ -28,19 +28,49 @@ pipeline {
 			}
 		}
 		
-		stage('Artifactory upload'){
-			steps{
-				script{
-					def server = Artifactory.server('Artifactory-server')
-					def rtMaven = Artifactory.newMavenBuild()
-					rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
-					rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
-					def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
-					server.publishBuildInfo buildInfo
-		   	 }	
-		   }
-	    }
+	stage ('Artifactory configuration') {
+            steps {
+                rtServer (
+                    id: "Artifactory-server",
+                    url: "http://3.134.110.19:8081/artifactory",
+                )
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "Artifactory-server",
+                    releaseRepo: "libs-release-local",
+                    snapshotRepo: "libs-snapshot-local"
+                )
+
+                rtMavenResolver (
+                    id: "MAVEN_RESOLVER",
+                    serverId: "Artifactory-server",
+                    releaseRepo: "libs-release",
+                    snapshotRepo: "libs-snapshot"
+                )
+            }
+        }
+
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: MAVEN_TOOL, // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
+            }
+        }
+
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+            }
 	}
+    }	
 	
 	post {
 	  always {
