@@ -110,5 +110,11 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
+     <distributionManagement>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>ip-172-31-34-32.us-east-2.compute.internal-snapshots</name>
+        <url>http://3.134.110.19:8081/artifactory/libs-snapshot-local</url>
+    </snapshotRepository>
+</distributionManagement>
 </project>
