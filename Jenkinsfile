@@ -2,7 +2,12 @@ pipeline {
      agent any
      tools {
            maven 'Maven3'
-     }
+       }
+	
+     environment {
+		MAVEN_TOOL='/opt/apache-maven-3.6.3'
+		}
+	
 	stages {	
 	   stage('Compile'){
             steps{
@@ -31,20 +36,15 @@ pipeline {
 			steps{
 				script{
 					 def server = Artifactory.server('Artifactory-server')
-  					 def buildInfo = Artifactory.newBuildInfo()
-  					 buildInfo.env.capture = true
-  					 def rtMaven = Artifactory.newMavenBuild()
-  					
-  					 rtMaven.deployer releaseRepo:'lla-esb-release', snapshotRepo:'lla-esb-snapshot', server: server
-      					 rtMaven.resolver releaseRepo:'libs-release', snapshotRepo:'libs-snapshot', server: server
-
-  					 rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-
-  					 // Publish build info.
-  					server.publishBuildInfo buildInfo
-		   	 }	
-		   }
-	    }
+					 def rtMaven = Artifactory.newMavenBuild()
+					 rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+					 rtMaven.deployer server: server, releaseRepo: 'lla-esb-release', snapshotRepo: 'lla-esb-snapshot'
+					 rtMaven.tool = MAVEN_TOOL
+					 def buildInfo = rtMaven.run pom: 'pom.xml', goals: 'clean install'
+					 server.publishBuildInfo buildInfo
+		   	 	}	
+		   	}
+	    	}
     }	
 	
 	post {
